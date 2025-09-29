@@ -27,6 +27,10 @@ public class Controller {
         structure_map.put(notes.getName() , notes);
         return true;
     }
+    @GetMapping("/name/{myname}")
+    public Notes_Structure getElementByID(@PathVariable("myname") String name) {
+        return structure_map.get(name);
+    }
 
 
 
