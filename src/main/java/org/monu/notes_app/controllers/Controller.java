@@ -1,7 +1,7 @@
 package org.monu.notes_app.controllers;
 
-import org.monu.notes_app.entity.Notes_Structure;
-import org.monu.notes_app.repository.Data_Repo;
+import org.monu.notes_app.entity.NotesStructure;
+import org.monu.notes_app.services.NotesServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,44 +10,37 @@ import java.util.List;
 @RestController
 public class Controller {
 
-    @Autowired
-    private Data_Repo repo;
+        @Autowired
+        private NotesServices notesServices;
 
         @GetMapping("/")
         public String home() {
-            return "Notes App";
+            return notesServices.home();
         }
 
         @GetMapping("/all")
-        public List<Notes_Structure> getAllNotes() {
-            return repo.findAll();
+        public List<NotesStructure> getAllNotes() {
+            return notesServices.getAllNotes();
         }
 
         @PostMapping("/create")
-        public Notes_Structure createNotes(@RequestBody Notes_Structure notes) {
-            return repo.save(notes);
+        public NotesStructure createNotes(@RequestBody NotesStructure notes) {
+            return notesServices.createNotes(notes);
         }
 
         @GetMapping("/find/{id}")
-        public Notes_Structure getNotesById(@PathVariable("id") int id) {
-            return repo.findById(id).orElse(null);
+        public NotesStructure getNotesById(@PathVariable("id") int id) {
+            return notesServices.getNotesById(id);
         }
 
         @DeleteMapping("/delete/{id}")
         public void deleteData(@PathVariable("id") int id) {
-            repo.deleteById(id);
+            notesServices.deleteNotes(id);
         }
 
-    @PutMapping("/update/{id}")
-    public Notes_Structure updateNotes(@PathVariable("id") int id, @RequestBody Notes_Structure notes) {
-        Notes_Structure exist = repo.findById(id).orElse(null);
-        if (exist == null) return null;
-
-        if (notes.getName() != null) exist.setName(notes.getName());
-        if (notes.getEmail() != null) exist.setEmail(notes.getEmail());
-        if (notes.getNotes() != null) exist.setNotes(notes.getNotes());
-
-        return repo.save(exist);
+        @PutMapping("/update/{id}")
+        public NotesStructure updateNotes(@PathVariable("id") int id, @RequestBody NotesStructure notes) {
+            return notesServices.updateNotes(id ,notes);
     }
 
 }

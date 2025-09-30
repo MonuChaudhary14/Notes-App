@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "notes")
-public class Notes_Structure {
+public class NotesStructure {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,7 +85,7 @@ public class Notes_Structure {
 
     @Override
     public String toString() {
-        return "Notes_Structure{" +
+        return "NotesStructure{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
