@@ -55,13 +55,17 @@
     </dependencies>
 
     <build>
-        <finalName>Notes_app-0.0.1-SNAPSHOT</finalName>
+        <finalName>app</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <finalName>app</finalName>
+                </configuration>
             </plugin>
         </plugins>
     </build>
+
 
 </project>
