@@ -1,4 +1,4 @@
-package org.monu.notes_app.Entity;
+package org.monu.notes_app.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

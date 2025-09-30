@@ -1,7 +1,7 @@
-package org.monu.notes_app.Controllers;
+package org.monu.notes_app.controllers;
 
-import org.monu.notes_app.Entity.Notes_Structure;
-import org.monu.notes_app.repo.Data_Repo;
+import org.monu.notes_app.entity.Notes_Structure;
+import org.monu.notes_app.repository.Data_Repo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
