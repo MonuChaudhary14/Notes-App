@@ -13,28 +13,33 @@ public class Controller {
     @Autowired
     private Data_Repo repo;
 
-    @GetMapping("/all")
-    public List<Notes_Structure> getAllNotes() {
-        return repo.findAll();
-    }
+        @GetMapping("/")
+        public String home() {
+            return "Notes App";
+        }
 
-    @PostMapping("/create")
-    public Notes_Structure createNotes(@RequestBody Notes_Structure notes) {
-        return repo.save(notes);
-    }
+        @GetMapping("/all")
+        public List<Notes_Structure> getAllNotes() {
+            return repo.findAll();
+        }
 
-    @GetMapping("/id/{id}")
-    public Notes_Structure getNotesById(@PathVariable("id") int id) {
-        return repo.findById(id).orElse(null);
-    }
+        @PostMapping("/create")
+        public Notes_Structure createNotes(@RequestBody Notes_Structure notes) {
+            return repo.save(notes);
+        }
 
-    @DeleteMapping("/id/{id}")
-    public void deleteData(@PathVariable("id") int id) {
-        repo.deleteById(id);
-    }
+        @GetMapping("/find/{id}")
+        public Notes_Structure getNotesById(@PathVariable("id") int id) {
+            return repo.findById(id).orElse(null);
+        }
 
-    @PutMapping("/id/{id}")
-    public Notes_Structure updateNotes(@PathVariable int id, @RequestBody Notes_Structure notes) {
+        @DeleteMapping("/delete/{id}")
+        public void deleteData(@PathVariable("id") int id) {
+            repo.deleteById(id);
+        }
+
+    @PutMapping("/update/{id}")
+    public Notes_Structure updateNotes(@PathVariable("id") int id, @RequestBody Notes_Structure notes) {
         Notes_Structure exist = repo.findById(id).orElse(null);
         if (exist == null) return null;
 
