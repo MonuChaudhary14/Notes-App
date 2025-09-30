@@ -1,47 +1,48 @@
 package org.monu.notes_app.Controllers;
 
 import org.monu.notes_app.Entity.Notes_Structure;
-
+import org.monu.notes_app.repo.Data_Repo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-
-//@RequestMapping("/getNotes")
 @RestController
 public class Controller {
 
-    private Map<String , Notes_Structure> structure_map = new HashMap<>();
+    @Autowired
+    private Data_Repo repo;
 
     @GetMapping("/all")
-    public List<Notes_Structure> getAllNotes(){
-        return new ArrayList<>(structure_map.values());
+    public List<Notes_Structure> getAllNotes() {
+        return repo.findAll();
     }
 
     @PostMapping("/create")
-    public boolean createNotes(@RequestBody Notes_Structure notes) {
-
-        structure_map.put(notes.getName() , notes);
-        return true;
-    }
-    @GetMapping("/name/{myname}")
-    public Notes_Structure getNotesByName(@PathVariable("myname") String name) {
-        return structure_map.get(name);
+    public Notes_Structure createNotes(@RequestBody Notes_Structure notes) {
+        return repo.save(notes);
     }
 
-    @DeleteMapping("/name/{myname}")
-    public Notes_Structure deleteData(@PathVariable("myname") String name) {
-        return structure_map.remove(name);
+    @GetMapping("/id/{id}")
+    public Notes_Structure getNotesById(@PathVariable("id") int id) {
+        return repo.findById(id).orElse(null);
     }
 
-    @PutMapping("/name/{name}")
-    public Notes_Structure updateNotes(@RequestBody Notes_Structure notes) {
-        return structure_map.put(notes.getName() , notes);
+    @DeleteMapping("/id/{id}")
+    public void deleteData(@PathVariable("id") int id) {
+        repo.deleteById(id);
     }
 
+    @PutMapping("/id/{id}")
+    public Notes_Structure updateNotes(@PathVariable int id, @RequestBody Notes_Structure notes) {
+        Notes_Structure exist = repo.findById(id).orElse(null);
+        if (exist == null) return null;
 
+        if (notes.getName() != null) exist.setName(notes.getName());
+        if (notes.getEmail() != null) exist.setEmail(notes.getEmail());
+        if (notes.getNotes() != null) exist.setNotes(notes.getNotes());
+
+        return repo.save(exist);
+    }
 
 }
