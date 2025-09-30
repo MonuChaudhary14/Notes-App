@@ -28,8 +28,18 @@ public class Controller {
         return true;
     }
     @GetMapping("/name/{myname}")
-    public Notes_Structure getElementByID(@PathVariable("myname") String name) {
+    public Notes_Structure getNotesByName(@PathVariable("myname") String name) {
         return structure_map.get(name);
+    }
+
+    @DeleteMapping("/name/{myname}")
+    public Notes_Structure deleteData(@PathVariable("myname") String name) {
+        return structure_map.remove(name);
+    }
+
+    @PutMapping("/name/{name}")
+    public Notes_Structure updateNotes(@RequestBody Notes_Structure notes) {
+        return structure_map.put(notes.getName() , notes);
     }
 
 
