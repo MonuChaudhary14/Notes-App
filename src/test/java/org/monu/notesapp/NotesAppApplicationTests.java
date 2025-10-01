@@ -1,4 +1,4 @@
-package org.monu.notes_app;
+package org.monu.notesapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
