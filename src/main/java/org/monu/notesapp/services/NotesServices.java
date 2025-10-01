@@ -3,6 +3,7 @@ package org.monu.notesapp.services;
 import java.util.List;
 import org.monu.notesapp.entity.NotesStructure;
 import org.monu.notesapp.repository.DataRepo;
+import org.monu.notesapp.services.interfaces.ServicesInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
  * Service class for handling all note-related operations.
  */
 @Service
-public class NotesServices {
+public class NotesServices implements ServicesInterface {
 
   /**
   * Repository for accessing note data from the database.
@@ -36,8 +37,6 @@ public class NotesServices {
 
   /**
   * Create a new note.
-  *
-  * @return The created NotesStructure object.
   */
   public NotesStructure createNotes(NotesStructure notes) {
     return repo.save(notes);
@@ -50,6 +49,7 @@ public class NotesServices {
   * @return NotesStructure object if found, otherwise null.
   */
   public NotesStructure getNotesById(int id) {
+
     return repo.findById(id).orElse(null);
   }
 

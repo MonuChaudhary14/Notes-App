@@ -33,7 +33,7 @@ public class NotesStructure {
   /**
   * Email of the note creator.
   */
-  @Column(nullable = false, length = 100, unique = true)
+  @Column(nullable = false, length = 100)
   private String email;
 
   /**
@@ -136,8 +136,8 @@ public class NotesStructure {
               + ", name='" + name + '\''
               + ", email='" + email + '\''
               + ", notes='" + notes + '\''
-              + ", createdAt=" + createdAt + '\''
-              + ", updatedAt=" + updatedAt + '\''
+              + ", createdAt=" + createdAt
+              + ", updatedAt=" + updatedAt
               + '}';
 
   }

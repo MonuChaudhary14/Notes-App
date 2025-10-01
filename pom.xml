@@ -75,7 +75,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>validate</id>
+                        <id>validate-checkstyle</id>
                         <phase>verify</phase>
                         <goals>
                             <goal>check</goal>

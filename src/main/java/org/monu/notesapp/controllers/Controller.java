@@ -2,74 +2,97 @@ package org.monu.notesapp.controllers;
 
 import java.util.List;
 import org.monu.notesapp.entity.NotesStructure;
-import org.monu.notesapp.services.NotesServices;
+import org.monu.notesapp.services.interfaces.ServicesInterface;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 /**
- * This is the controller class which handles the requests.
+ * Controller class which handles all note-related API requests.
  */
 @RestController
 public class Controller {
 
-  @Autowired
-  private NotesServices notesServices;
+    @Autowired
+    private ServicesInterface notesServiceInterface;
 
-  /**
-  * This is the route for home page.
-  */
 
-  @GetMapping("/")
-  public String home() {
-    return notesServices.home();
-  }
+    /**
+     * Home endpoint.
+     */
+    @GetMapping("/")
+    public ResponseEntity<String> home() {
+        String homepage = notesServiceInterface.home();
+        return ResponseEntity.ok(homepage);
+    }
 
-  /**
-  * This is to get all the notes.
-  */
+    /**
+     * Get all notes.
+     */
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllNotes() {
+        List<NotesStructure> result = notesServiceInterface.getAllNotes();
 
-  @GetMapping("/all")
-  public List<NotesStructure> getAllNotes() {
-    return notesServices.getAllNotes();
-  }
+        if (result == null || result.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
 
-  /**
-  * This is used to create the notes.
-  */
+        return ResponseEntity.ok(result);
+    }
 
-  @PostMapping("/create")
-  public NotesStructure createNotes(@RequestBody NotesStructure notes) {
-    return notesServices.createNotes(notes);
-  }
+    /**
+     * Create a new note.
+     */
+    @PostMapping("/create")
+    public ResponseEntity<NotesStructure> createNotes(@RequestBody NotesStructure notes) {
+        NotesStructure savedNote = notesServiceInterface.createNotes(notes);
 
-  /**
-  * This is used to find a specific note.
-  */
-  @GetMapping("/find/{id}")
-  public NotesStructure getNotesById(@PathVariable("id") int id) {
-    return notesServices.getNotesById(id);
-  }
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedNote);
+    }
 
-  /**
-  * This is used to delete a note.
-  */
-  @DeleteMapping("/delete/{id}")
-  public void deleteData(@PathVariable("id") int id) {
-    notesServices.deleteNotes(id);
-  }
 
-  /**
-  * This is used to update the notes.
-  */
+    /**
+     * Find a specific note by ID.
+     */
+    @GetMapping("/find/{id}")
+    public ResponseEntity<NotesStructure> getNotesById(@PathVariable("id") int id) {
+        NotesStructure note = notesServiceInterface.getNotesById(id);
 
-  @PutMapping("/update/{id}")
-  public NotesStructure updateNotes(@PathVariable("id") int id, @RequestBody NotesStructure notes) {
-    return notesServices.updateNotes(id, notes);
-  }
+        if (note == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(note);
+    }
+
+    /**
+     * Delete a note by ID.
+     */
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteData(@PathVariable("id") int id) {
+        NotesStructure note = notesServiceInterface.getNotesById(id);
+
+        if (note == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        notesServiceInterface.deleteNotes(id);
+        return ResponseEntity.ok("Files Deleted Successfully");
+    }
+
+    /**
+     * Update an existing note by ID.
+     */
+    @PutMapping("/update/{id}")
+    public ResponseEntity<NotesStructure> updateNotes(@PathVariable("id") int id, @RequestBody NotesStructure notes) {
+
+        NotesStructure updated = notesServiceInterface.updateNotes(id, notes);
+
+        if (updated == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(updated);
+    }
 }
