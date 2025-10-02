@@ -1,7 +1,6 @@
 package org.monu.notesapp.services.interfaces;
 
 import org.monu.notesapp.DTO.NotesDTO;
-import org.monu.notesapp.entity.NotesStructure;
 
 import java.util.List;
 
