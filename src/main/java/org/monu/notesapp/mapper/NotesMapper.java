@@ -1,4 +1,4 @@
-package org.monu.notesapp.Mapper;
+package org.monu.notesapp.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
