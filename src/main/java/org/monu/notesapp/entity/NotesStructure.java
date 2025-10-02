@@ -10,12 +10,21 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
 * Entity class representing a note.
 * Maps to the "notes" table in the database.
 */
+
+@Getter @Setter
+@ToString
 @Entity
 @Table(name = "notes")
+
 public class NotesStructure {
 
     /**
@@ -23,6 +32,7 @@ public class NotesStructure {
     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE)
     private int id;
 
     /**
@@ -49,8 +59,8 @@ public class NotesStructure {
     * Timestamp when the note was created.
     * Cannot be updated after creation.
     */
-    @Column(updatable = false)
     private LocalDateTime createdAt;
+
     /**
     * Timestamp when the note was last updated.
     */
@@ -70,63 +80,5 @@ public class NotesStructure {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    @Override
-    public String toString() {
-        return "NotesStructure{"
-                + "id=" + id
-                + ", name='" + name + '\''
-                + ", email='" + email + '\''
-                + ", title='" + title + '\''
-                + ", notes='" + notes + '\''
-                + ", createdAt=" + createdAt
-                + ", updatedAt=" + updatedAt
-                + '}';
-
     }
 }
