@@ -135,6 +135,7 @@ public class NotesStructure {
               + "id=" + id
               + ", name='" + name + '\''
               + ", email='" + email + '\''
+              + ", title='" + title + '\''
               + ", notes='" + notes + '\''
               + ", createdAt=" + createdAt
               + ", updatedAt=" + updatedAt

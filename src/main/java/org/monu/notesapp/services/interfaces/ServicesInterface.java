@@ -1,5 +1,6 @@
 package org.monu.notesapp.services.interfaces;
 
+import org.monu.notesapp.DTO.NotesDTO;
 import org.monu.notesapp.entity.NotesStructure;
 
 import java.util.List;
@@ -8,14 +9,14 @@ public interface ServicesInterface {
 
     String home();
 
-    List<NotesStructure> getAllNotes();
+    List<NotesDTO> getAllNotes();
 
-    NotesStructure createNotes(NotesStructure notes);
+    NotesDTO createNotes(NotesDTO notes);
 
-    NotesStructure getNotesById(int id);
+    NotesDTO getNotesById(int id);
 
     void deleteNotes(int id);
 
-    NotesStructure updateNotes(int id, NotesStructure notes);
+    NotesDTO updateNotes(int id, NotesDTO notes);
 
 }

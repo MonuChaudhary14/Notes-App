@@ -1,6 +1,9 @@
 package org.monu.notesapp.services;
 
 import java.util.List;
+
+import org.monu.notesapp.DTO.NotesDTO;
+import org.monu.notesapp.Mapper.NotesMapper;
 import org.monu.notesapp.entity.NotesStructure;
 import org.monu.notesapp.repository.DataRepo;
 import org.monu.notesapp.services.interfaces.ServicesInterface;
@@ -18,8 +21,10 @@ public class NotesServices implements ServicesInterface {
   */
   @Autowired
   private DataRepo repo;
+    @Autowired
+    private NotesMapper notesMapper;
 
-  /**
+    /**
   * Home service endpoint.
   */
   public String home() {
@@ -31,15 +36,24 @@ public class NotesServices implements ServicesInterface {
   *
   * @return List of all NotesStructure objects.
   */
-  public List<NotesStructure> getAllNotes() {
-    return repo.findAll();
+  public List<NotesDTO> getAllNotes() {
+
+      List<NotesStructure> notesList = repo.findAll();
+
+      return notesMapper.notesListToNotesDTOList(notesList);
   }
 
   /**
   * Create a new note.
   */
-  public NotesStructure createNotes(NotesStructure notes) {
-    return repo.save(notes);
+  public NotesDTO createNotes(NotesDTO notes) {
+
+      NotesStructure note = notesMapper.notesDTOToNotesStructure(notes);
+
+      NotesStructure updatedNote = repo.save(note);
+
+      return notesMapper.notesToNotesDTO(updatedNote);
+
   }
 
   /**
@@ -48,9 +62,11 @@ public class NotesServices implements ServicesInterface {
   * @param id ID of the note to retrieve.
   * @return NotesStructure object if found, otherwise null.
   */
-  public NotesStructure getNotesById(int id) {
+  public NotesDTO getNotesById(int id) {
 
-    return repo.findById(id).orElse(null);
+    NotesStructure notes = repo.findById(id).orElse(null);
+
+    return notesMapper.notesToNotesDTO(notes);
   }
 
   /**
@@ -69,22 +85,28 @@ public class NotesServices implements ServicesInterface {
   * @param notes NotesStructure object containing updated data.
   * @return The updated NotesStructure object, or null if not found.
   */
-  public NotesStructure updateNotes(int id, NotesStructure notes) {
-    NotesStructure exist = repo.findById(id).orElse(null);
-    if (exist == null) {
-      return null;
-    }
+  public NotesDTO updateNotes(int id, NotesDTO notes) {
 
-    if (notes.getName() != null) {
-      exist.setName(notes.getName());
-    }
-    if (notes.getEmail() != null) {
-      exist.setEmail(notes.getEmail());
-    }
-    if (notes.getNotes() != null) {
-      exist.setNotes(notes.getNotes());
-    }
+      NotesStructure exist = repo.findById(id).orElse(null);
+      if (exist == null) {
+          return null;
+      }
 
-    return repo.save(exist);
+      if(notes.getName() != null) exist.setName(notes.getName());
+
+      if (notes.getTitle() != null) {
+          exist.setTitle(notes.getTitle());
+      }
+      if (notes.getDescription() != null) {
+          exist.setNotes(notes.getDescription());
+      }
+      if (notes.getEmailId() != null) {
+          exist.setEmail(notes.getEmailId());
+      }
+
+      NotesStructure updated = repo.save(exist);
+
+      return notesMapper.notesToNotesDTO(updated);
   }
+
 }
