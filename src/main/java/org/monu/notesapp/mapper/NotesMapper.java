@@ -12,12 +12,12 @@ public interface NotesMapper {
 
     @Mapping(source = "notes", target = "description")
     @Mapping(source = "email", target = "emailId")
-    NotesDTO notesToNotesDTO(NotesStructure notes);
+    NotesDTO notesToNotesDTO(NotesStructure entity);
 
-    List<NotesDTO> notesListToNotesDTOList(List<NotesStructure> notesList);
+    List<NotesDTO> notesListToNotesDTOList(List<NotesStructure> entityList);
 
     @Mapping(source = "description", target = "notes")
     @Mapping(source = "emailId", target = "email")
-    NotesStructure notesDTOToNotesStructure(NotesDTO notes);
+    NotesStructure notesDTOToNotesStructure(NotesDTO dto);
 
 }
